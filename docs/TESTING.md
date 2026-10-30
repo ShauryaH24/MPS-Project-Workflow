@@ -14,6 +14,23 @@
 
 ![Successful F3 test submission](screenshots/f3-success.png)
 
+## Verification · 30 Oct 2026
+
+Behavior fixes only. Colors, component markup, and the 100% layout were left as they were.
+
+- `pnpm test`: 6 passing. The three original domain tests still pass. New tests cover confirmation reset, corrupt-draft restore, and Sofia’s insufficient-evidence status.
+- `pnpm build`: TypeScript and the production Vite build passed.
+- Chromium at 127.0.0.1:5173, 1440×900: overview at 100% text size kept the existing shell. The primary button computed to rgb(7, 77, 198) and the page heading to 20px. Shell zoom was 1. Increasing text size to 110% enlarged the heading; decreasing it returned zoom to 1.
+- A saved draft of `{selected: null}` reloaded onto Review group overview instead of a blank page.
+- Evidence table: Amelia and Noah stay Needs review for equivalent fractions. Sofia’s equivalent-fractions cell and detail badge say Insufficient evidence, using the existing warning badge. The compare-fractions column is unchanged.
+- Flag for review follows the selected student. Noah stayed flagged after Sofia was flagged; Amelia stayed unflagged.
+- Selecting the fourth material, saving, and refreshing restored that material, cleared confirmation, and showed 16 minutes after Start review.
+- An empty date shows “Enter a start date and an end date.” A due date before the start date still shows “End date must be on or after the start date.”
+- Leaving confirmation and starting review again cleared the acknowledgement and disabled Confirm and assign.
+- Simulated failure kept the draft and the checked acknowledgement. Retry assigned the review. Success still separates Assigned from Not started.
+- Assigned tests selects the Tests tab. Breadcrumb: Groups / Mathematics / Assigned tests.
+- Curriculum plan selects that tab. A confirmed plan opens Curriculum plan with the existing Not started badge.
+
 ## Remaining verification
 
-Full automated browser regression, narrow viewport visual QA, modal focus trapping, full assistive-technology audit, save/restore after refresh, both action branches with all invalid/empty combinations, complete asset geometry comparison across all design frames, live backend/calendar operations and GitHub Actions result. Domain tests are not a substitute for these checks. CI configuration is included; its remote result must be checked separately.
+Full automated browser regression checked into the repo, narrow viewport visual QA, modal focus trapping, full assistive-technology audit, every invalid schedule combination, complete asset geometry comparison across all design frames, live backend/calendar operations and GitHub Actions result. Domain tests and the 30 Oct Chromium walk are not a substitute for these checks. CI configuration is included; its remote result must be checked separately.

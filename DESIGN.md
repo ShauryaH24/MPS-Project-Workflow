@@ -38,7 +38,7 @@ DM Sans; text #201f1d; secondary #5d5951; canvas #faf9f7; sidebar #f8f8f6; borde
 - Differentiation frame includes both individual support and level-mapping variants. First slice uses individual support; Threshold/Satisfactory/Basic/Higher version mapping remains unimplemented.
 - Dates in reference screens are 19–23 Oct 2026. Prototype defaults to 23–30 Oct to support testing; editable, not live scheduling.
 - By lesson currently changes the grouping heading only; genuine lesson grouping is pending.
-- Detailed evidence is available only for Amelia. Noah/Sofia item responses are explicitly unavailable; aggregate evidence is not expanded into invented student data.
+- Detailed evidence is available only for Amelia. Noah/Sofia item responses are explicitly unavailable; aggregate evidence is not expanded into invented student data. Sofia’s equivalent-fractions cell and detail badge stay Insufficient evidence.
 - Material Preview uses a simple shared sample question, not a real content bank renderer.
 - Dialogs and destination views are simplified for workflow tests. Modal focus trapping and full keyboard/screen-reader audit remain outstanding.
 - Calendar action is a local simulation; timetable conflict/recalculation, network loading, stale evidence, disputed marking, source-unavailable and permission-state designs need later implementation.
