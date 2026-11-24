@@ -206,6 +206,13 @@ header > button:last-child { justify-self: end; min-height: 40px; }
 .receipt-details dt { color: var(--muted); font-size: 12px; }
 .receipt-details dd { margin: 4px 0 0; }
 .destination-table small { display: block; font-weight: 400; }
+.student-evidence th small { display: block; font-weight: 400; }
+.recommendation-reason { margin: 14px 0; }
+.recommendation-reason summary { cursor: pointer; }
+.student-picker { width: min(440px, calc(100% - 32px)); border: 1px solid var(--border); color: var(--text); }
+.student-picker::backdrop { background: #201f1d66; }
+.student-options { margin: 12px 0; max-height: 42dvh; overflow: auto; }
+.student-options .evidence-pill { margin-left: auto; }
 @media (max-width: 760px) {
   .flow-split { grid-template-columns: 1fr; gap: 0; }
   .progress-steps { flex-wrap: wrap; }

@@ -1,5 +1,10 @@
 # Verification · 22 Oct 2026
 
+## Recommendation detail
+
+- `corepack pnpm test` passed all three domain tests. `corepack pnpm build` passed.
+- Playwright in Edge verified decimals rationale, the percentage evidence gate, Noah and Sofia’s evidence, and search, cancel, and save in the student picker. Adding Liam carried him through the existing 15-minute fractions draft and recipient settings. Assignment still required explicit acknowledgement and completed through the existing success screen.
+
 ## Screens and states catalogue · 24 Nov 2026
 
 - `corepack pnpm test` passed all three domain tests and `corepack pnpm build` passed TypeScript and Vite.

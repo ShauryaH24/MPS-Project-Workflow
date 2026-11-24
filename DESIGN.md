@@ -68,7 +68,7 @@ The entry replaces the F3 learning-need/lesson toggle with Suggested groups and 
 
 Catalogue functionality pending an implementation decision:
 
-- **Recommendation detail and evidence (group 2).** Decimal and percentage detail routes, missing student responses, and the student-selection overlay in evidence and assembly.
+- **Recommendation detail and evidence (group 2).** An additional student-selection entry point from assembly remains pending.
 - **Assembly and resource retrieval (groups 3–4).** Material-specific previews and answer keys, library add and replace flows, review/apply/cancel, and ordering. Current search and selection operate against a small local fixture. The catalogue marks F4 retrieval states unverified.
 - **Differentiation and draft review (groups 5–6).** Shared default version, level-based suggestions and neutral version names, saved/unsaved support states, reset to suggestion, and returning to the saved draft from Calendar.
 - **Assignment and follow-up (groups 7–9).** Practice-only assignment with teacher-only resources, time fields, submitting and duplicate-safe recovery states, Assigned tests filters/archive, per-student progress and evidence, and the follow-up decision and draft.
@@ -78,7 +78,7 @@ Catalogue functionality pending an implementation decision:
 - Material selection is 5+4+6 = 15 minutes, while later static review frames describe a different 5+8+3 = 16-minute sequence. This implementation consistently derives minutes from the selected materials. Product/design must approve a single canonical sequence.
 - Differentiation frame includes both individual support and level-mapping variants. First slice uses individual support; Threshold/Satisfactory/Basic/Higher version mapping remains unimplemented.
 - Dates in reference screens are 19–23 Oct 2026. Prototype defaults to 23–30 Oct to support testing; editable, not live scheduling.
-- Detailed evidence is available only for Amelia. Noah/Sofia item responses are explicitly unavailable; aggregate evidence is not expanded into invented student data.
+- Recommendation detail uses v4 nodes 2009:31150, 2009:32608, 2009:32663, 2009:32109, 2009:32229, 2009:32349 and 2009:31566. Amelia retains her three sample items. Noah and Sofia show one documented example each, using the checkpoint examples also shown in 2009:31677 and 2009:31697. Unshown individual responses remain unavailable. Decimal detail is view-only because the existing preparation workflow is fractions-specific. The fractions student picker passes changes into preparation only on Create review.
 - Material Preview uses a simple shared sample question, not a real content bank renderer.
 - Dialogs and destination views are simplified for workflow tests. Modal focus trapping and full keyboard/screen-reader audit remain outstanding.
 - Calendar action is a local simulation; timetable conflict/recalculation, network loading, stale evidence, disputed marking, source-unavailable and permission-state designs need later implementation.

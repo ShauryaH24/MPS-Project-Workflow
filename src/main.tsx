@@ -1,7 +1,8 @@
 import React,{useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {materials,students,duration,validSchedule,canSubmit,initialDraft} from './domain.mjs';
-import {RecommendedReview, ReviewGlyph} from './RecommendedReview';
+import {RecommendedReview, ReviewGlyph, groups} from './RecommendedReview';
+import {RecommendationDetail} from './RecommendationDetail';
 import './style.css';
 
 type Draft=typeof initialDraft;
@@ -11,7 +12,8 @@ function Icon({name,size=16}:{name:string,size?:number}){return <img alt="" src=
 function Button({children,onClick,primary=false,disabled=false}:{children:React.ReactNode,onClick?:()=>void,primary?:boolean,disabled?:boolean}){return <button type="button" disabled={disabled} className={primary?'primary':''} onClick={onClick}>{children}</button>;}
 function App(){
  const [page,setPage]=useState('overview');const [step,setStep]=useState(0);const [draft,setDraft]=useState<Draft>(()=>{try{const d=JSON.parse(localStorage.getItem('info5900-draft-v1')||'null');return d?{...initialDraft,...d,reviewed:false}:initialDraft;}catch{return initialDraft;}});
- const [query,setQuery]=useState('');const [type,setType]=useState('All types');const [student,setStudent]=useState<number|null>(null);const [flag,setFlag]=useState(false);const [dialog,setDialog]=useState<string|null>(null);const [notice,setNotice]=useState('');const [zoom,setZoom]=useState(100);const [failure,setFailure]=useState(false);const [submitted,setSubmitted]=useState(false);const [receipt,setReceipt]=useState<Draft|null>(null);
+ const [query,setQuery]=useState('');const [type,setType]=useState('All types');const [groupIndex,setGroupIndex]=useState(0);const [flag,setFlag]=useState(false);const [dialog,setDialog]=useState<string|null>(null);const [notice,setNotice]=useState('');const [zoom,setZoom]=useState(100);const [failure,setFailure]=useState(false);const [submitted,setSubmitted]=useState(false);const [receipt,setReceipt]=useState<Draft|null>(null);
+ const [recipientOptions,setRecipientOptions]=useState(()=>[...new Set([...students,...draft.recipients])]);
  const update=(p:Partial<Draft>)=>{setDraft(d=>({...d,...p,reviewed:false}));setFailure(false);};
  const go=(p:string,s=0)=>{setPage(p);setStep(s);setNotice('');window.scrollTo(0,0);};
  const save=()=>{try{localStorage.setItem('info5900-draft-v1',JSON.stringify(draft));setNotice('Draft saved on this device.');}catch{setNotice('Storage unavailable. Keep this tab open to retain your draft.');}};
@@ -47,37 +49,19 @@ function App(){
  <div className="workspace-content">
  {notice&&<p className="notice" role="status">{notice}</p>}
  <div hidden={page!=='overview'}><RecommendedReview onOpen={title=>{
-   if(title==='Finding equivalent fractions') go('evidence');
-   else setDialog(title==='Percentages'?'Collect a fresh example before choosing a shared review plan.':'Individual decimal item responses are unavailable in this prototype.');
+   setGroupIndex(groups.findIndex(group=>group.title===title));
+   go('evidence');
  }}/></div>
- {page==='evidence'&&<section className="flow-screen">
- <button className="textlink icon-label flow-back" onClick={()=>go('overview')}><ReviewGlyph name="back"/> Suggested groups</button>
- <h1>Finding equivalent fractions</h1>
- <span className="evidence-pill repeated">Repeated evidence</span>
- <dl className="evidence-overview">
-   <div><dt>Shared error</dt><dd>Changes only one part of the fraction</dd></div>
-   <div><dt>Source</dt><dd>Fractions checkpoint · 12 Oct</dd></div>
-   <div><dt>Evidence</dt><dd>8 attempted items · 3 students</dd></div>
- </dl>
- <h2 className="section-title">Students · {students.length}</h2>
- <div className="review-table student-evidence"><table>
-   <thead><tr><th scope="col">Student</th><th scope="col">Evidence</th><th scope="col">Last activity</th><th scope="col"><span className="sr-only">Actions</span></th></tr></thead>
-   <tbody>{students.map((name,index)=><React.Fragment key={name}>
-     <tr>
-       <th scope="row"><span className="student-group"><span className="class-avatar">{name.split(' ').map(part=>part[0]).join('')}</span>{name}</span></th>
-       <td>{index===0?<span className="evidence-pill repeated">Repeated evidence</span>:index===2?<span className="evidence-pill">Insufficient evidence</span>:<small>Individual evidence unavailable</small>}</td>
-       <td>12 Oct</td>
-       <td><button className="icon-button disclosure" aria-expanded={student===index} aria-controls={`student-evidence-${index}`} aria-label={`${student===index?'Hide':'Show'} evidence for ${name}`} onClick={()=>setStudent(student===index?null:index)}><ReviewGlyph name="down"/></button></td>
-     </tr>
-     <tr id={`student-evidence-${index}`} hidden={student!==index}><td colSpan={4}><div className="response-panel">
-     {index===0?<><h3>Question evidence</h3><p className="muted">Illustrative responses from Fractions checkpoint · 12 Oct 2026. Selected items, not the full test.</p><table><thead><tr><th>Item</th><th>Question</th><th>Amelia’s response</th><th>Expected</th></tr></thead><tbody><tr><td>Q3</td><td>Complete 2/3 = □/12</td><td>2/12</td><td>8/12</td></tr><tr><td>Q5</td><td>Write 3/5 with numerator 6</td><td>6/5</td><td>6/10</td></tr><tr><td>Q7</td><td>Choose a fraction equal to 1/2</td><td>2/4</td><td>2/4</td></tr></tbody></table><h3>What this evidence supports</h3><p>Across Q3 and Q5, Amelia changes only one part of the fraction. Review how the same scale factor applies to numerator and denominator.</p></>:<p>Individual item responses are unavailable in this prototype. Do not infer them from aggregate coverage.</p>}<div className="warning callout"><strong>Evidence limitation</strong><p>Sample responses from one checkpoint, with no written working or explanation. Check the student’s reasoning with a fresh example before confirming support.</p></div><p>Completing a lesson does not mean the learning is secure.</p><Button onClick={()=>setFlag(!flag)}>{flag?'Remove review flag':'Flag for review'}</Button><span className="muted"> Action status: {flag?'Flagged':'Not flagged'}</span>
-     </div></td></tr>
-   </React.Fragment>)}</tbody>
- </table></div>
- <footer className="flow-footer"><Button primary onClick={()=>go('prepare')}>Create review</Button></footer>
- </section>}
+ {page==='evidence'&&<RecommendationDetail key={groupIndex} groupIndex={groupIndex} recipients={draft.recipients}
+   flagged={flag} onToggleFlag={()=>setFlag(!flag)} onBack={()=>go('overview')} onCreate={selected=>{
+     if(selected){
+       setRecipientOptions(options=>[...new Set([...options,...selected])]);
+       update({recipients:selected});
+     }
+     go('prepare');
+   }}/>}
  {isPrep&&<section className="flow-screen">
- <button className="textlink icon-label flow-back" onClick={()=>step===0?go('evidence'):setStep(step-1)}><ReviewGlyph name="back"/> {['Finding equivalent fractions','Assemble material','Differentiate','Review draft','Choose action',draft.action==='plan'?'Schedule in Curriculum plan':'Assignment settings'][step]}</button>
+ <button className="textlink icon-label flow-back" onClick={()=>step===0?(setGroupIndex(0),go('evidence')):setStep(step-1)}><ReviewGlyph name="back"/> {['Finding equivalent fractions','Assemble material','Differentiate','Review draft','Choose action',draft.action==='plan'?'Schedule in Curriculum plan':'Assignment settings'][step]}</button>
  <div className="flow-heading"><h1>{title}</h1>{step<5&&<span className="evidence-pill">{step===1?'Optional':'Draft'}</span>}</div>
  <p className="subtitle">{step===1?'Optional — adjust support for individual students or continue.':`Equivalent fractions review · ${summary}`}</p>
  <ol className="progress-steps" aria-label="Review preparation">{labels.map((label,index)=><li key={label} className={index<position?'complete':''} aria-current={position===index?'step':undefined}><span>{index<position?'✓':index+1}</span>{label}</li>)}</ol>
@@ -111,7 +95,7 @@ function App(){
  <div className="row panel-section"><h2>Review materials</h2><Button onClick={()=>setStep(0)}>Edit materials</Button></div>
  <ul className="material-list">{selectedMaterials.map(material=><li key={material.id}><small>{material.type}</small><strong>{material.title}</strong><span>{material.minutes} min</span></li>)}</ul>
  <div className="row panel-section"><h2>Support</h2><Button onClick={()=>setStep(1)}>Edit support</Button></div>
- {draft.recipients.map(name=><p key={name}><strong>{name}</strong> · {draft.support[students.indexOf(name)]}</p>)}{draft.note&&<p>{draft.note}</p>}
+ {draft.recipients.map(name=><p key={name}><strong>{name}</strong> · {draft.support[students.indexOf(name)] ?? 'No individual support set'}</p>)}{draft.note&&<p>{draft.note}</p>}
  </article>}
  {step===3&&<><h2>Where should this review go?</h2>{[
    {value:'assignment',label:'Assign now',description:'Create a local assigned test for selected students.',scope:'Selected students',icon:'imgIcon1'},
@@ -124,7 +108,7 @@ function App(){
  </label>)}<p className="muted">Nothing is sent or scheduled until you confirm.</p></>}
  {step===4&&<div className="flow-split">
  <article className="flow-panel"><h2>{draft.action==='assignment'?'Assignment setup':'Date and recipients'}</h2>
- <fieldset><legend>Recipients</legend>{students.map(name=><label className="checkline" key={name}><input type="checkbox" checked={draft.recipients.includes(name)} onChange={()=>update({recipients:draft.recipients.includes(name)?draft.recipients.filter(recipient=>recipient!==name):[...draft.recipients,name]})}/>{name}</label>)}</fieldset>
+ <fieldset><legend>Recipients</legend>{recipientOptions.map(name=><label className="checkline" key={name}><input type="checkbox" checked={draft.recipients.includes(name)} onChange={()=>update({recipients:draft.recipients.includes(name)?draft.recipients.filter(recipient=>recipient!==name):[...draft.recipients,name]})}/>{name}</label>)}</fieldset>
  <div className="filters"><label>Start date<input type="date" value={draft.start} onChange={event=>update({start:event.target.value})}/></label><label>{draft.action==='plan'?'End date':'Due date'}<input type="date" value={draft.due} min={draft.start} onChange={event=>update({due:event.target.value})}/></label></div>
  {!validSchedule(draft.start,draft.due)&&<p role="alert" className="error callout">End date must be on or after the start date.</p>}
  </article>
@@ -139,7 +123,7 @@ function App(){
    <article className="flow-panel">
      <div className="row"><h2>Recipients · {draft.recipients.length}</h2><div className="actions"><Button onClick={()=>setStep(1)}>Edit support</Button><Button onClick={()=>setStep(4)}>Edit recipients</Button></div></div>
      <div className="tablewrap"><table><thead><tr><th scope="col">Student</th><th scope="col">Support</th></tr></thead><tbody>
-     {draft.recipients.map(name=><tr key={name}><th scope="row">{name}</th><td>{draft.support[students.indexOf(name)]}</td></tr>)}
+     {draft.recipients.map(name=><tr key={name}><th scope="row">{name}</th><td>{draft.support[students.indexOf(name)] ?? 'No individual support set'}</td></tr>)}
      </tbody></table></div>
      <div className="row panel-section"><h2>Review materials</h2><Button onClick={()=>setStep(0)}>Edit materials</Button></div>
      <ul className="material-list">{selectedMaterials.map(material=><li key={material.id}><small>{material.type}</small><strong>{material.title}</strong><span>{material.minutes} min</span></li>)}</ul>

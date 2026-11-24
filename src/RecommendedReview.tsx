@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-const groups = [
+export const groups = [
   {title:'Finding equivalent fractions', source:'Fractions checkpoint', date:'12 Oct', initials:['AR','NW','SM'], repeated:true, note:'Same error on 2 of 3 related items', error:'Changes only one part of the fraction', attempts:8},
   {title:'Decimal place value', source:'Decimals checkpoint', date:'13 Oct', initials:['LK','OB'], repeated:true, note:'Same error repeated by both students', error:'Treats longer decimals as larger', attempts:6},
   {title:'Percentages', source:'Percentages entry check', date:'14 Oct', initials:['EJ','MT'], repeated:false, note:'Only 1 related item per student — check again', error:'Not yet clear', attempts:2},
@@ -10,7 +10,7 @@ const gapCounts = [3, 2, 2, 4, 5, 3];
 const gapTitles = [...groups.map(group => group.title), 'Comparing fractions', 'Adding unlike fractions', 'Ratios and rates'];
 const allSources = 'All assessments';
 const allStatuses = 'All evidence statuses';
-const evidenceLabel = (repeated: boolean) => repeated ? 'Repeated evidence' : 'Insufficient evidence';
+export const evidenceLabel = (repeated: boolean) => repeated ? 'Repeated evidence' : 'Insufficient evidence';
 
 export function ReviewGlyph({name}: {name:'down'|'right'|'back'|'filters'|'edit'|'code'}) {
   const paths = {
