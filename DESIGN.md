@@ -51,6 +51,30 @@ The PNG palette supplies the canvas #FBFAF9, sidebar #F8F8F6, border #DBD8D2, pr
 
 The entry replaces the F3 learning-need/lesson toggle with Suggested groups and Class knowledge gaps. Filters open on demand and retain their state when switching views. The fractions aggregate is eight attempted items across three students in the supplied v4 screen. Downstream source summaries use that count too. The existing synthetic teacher identity is used in the shared shell. The header's Assign test, Edit group and Access Code controls show local information dialogs. The fractions row opens the implemented evidence-to-assignment path.
 
+### Screens and states catalogue · 24 Nov 2026
+
+`02 · Screens & states catalogue.png` is the v4 visual reference for the existing downstream screens. This pass adapts their layout and controls while preserving local F3 data, date validation, and explicit teacher confirmation. The catalogue's 16-minute example, whole-class plan scope, and separate assignment and scheduling material rules differ from current F3 behavior.
+
+| Updated screen | v4 source node |
+|---|---|
+| Fractions detail and student evidence list | 2009:31150 |
+| Assemble material | 2009:31270 |
+| Differentiate | 2009:34092, 2009:34144 |
+| Review draft | 2009:31380 |
+| Choose action | 2009:31842 |
+| Confirm assigned test | 2009:31878 |
+| Assignment result and Assigned tests list | 2009:34346, 2009:36753 |
+| Curriculum plan setup and confirmation | 2009:34660, 2009:34775 |
+
+Catalogue functionality pending an implementation decision:
+
+- **Recommendation detail and evidence (group 2).** Decimal and percentage detail routes, missing student responses, and the student-selection overlay in evidence and assembly.
+- **Assembly and resource retrieval (groups 3–4).** Material-specific previews and answer keys, library add and replace flows, review/apply/cancel, and ordering. Current search and selection operate against a small local fixture. The catalogue marks F4 retrieval states unverified.
+- **Differentiation and draft review (groups 5–6).** Shared default version, level-based suggestions and neutral version names, saved/unsaved support states, reset to suggestion, and returning to the saved draft from Calendar.
+- **Assignment and follow-up (groups 7–9).** Practice-only assignment with teacher-only resources, time fields, submitting and duplicate-safe recovery states, Assigned tests filters/archive, per-student progress and evidence, and the follow-up decision and draft.
+- **Curriculum plan and Calendar (groups 10–12).** Whole-class scheduling with eligible materials, timetable conflict review, suggested and manual dates/times, planned-test movement, linked writes, Calendar views, and timed Undo.
+- **Alternative and recovery states (group 13).** Stale/disputed evidence, resource partial results and access failures, stale selections and failed apply/support saves, previous-submission checks and recovered records, Calendar access and availability errors, schedule changes, and failed or expired Undo. Empty local search and a simulated submission failure already exist.
+
 - Material selection is 5+4+6 = 15 minutes, while later static review frames describe a different 5+8+3 = 16-minute sequence. This implementation consistently derives minutes from the selected materials. Product/design must approve a single canonical sequence.
 - Differentiation frame includes both individual support and level-mapping variants. First slice uses individual support; Threshold/Satisfactory/Basic/Higher version mapping remains unimplemented.
 - Dates in reference screens are 19–23 Oct 2026. Prototype defaults to 23–30 Oct to support testing; editable, not live scheduling.

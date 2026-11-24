@@ -1,5 +1,12 @@
 # Verification · 22 Oct 2026
 
+## Screens and states catalogue · 24 Nov 2026
+
+- `corepack pnpm test` passed all three domain tests and `corepack pnpm build` passed TypeScript and Vite.
+- Playwright with Microsoft Edge at 1280 × 800 verified Amelia's inline responses and Noah's unavailable evidence. It verified preview, empty search retaining the draft, adding a fourth material, editing individual support, and review progression. Browser captures of evidence, assembly, action choice and confirmation were compared with the catalogue.
+- The assignment flow blocked an invalid date range and cleared acknowledgement after a date edit. Simulated submission failure preserved the draft, retry created the local Assigned tests result, and the Curriculum plan branch also required acknowledgement before creating its local result.
+- At 390 × 844, Curriculum plan confirmation fit the viewport without horizontal document overflow. The browser walkthrough reported no uncaught page errors.
+
 ## Recommended review update · 24 Nov 2026
 
 - `corepack pnpm test` passed all 3 domain tests. `corepack pnpm build` passed TypeScript and Vite.
