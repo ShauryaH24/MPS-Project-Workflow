@@ -1,5 +1,11 @@
 # Verification · 22 Oct 2026
 
+## Assigned tests
+
+- `corepack pnpm test` passed all three domain tests. `corepack pnpm build` passed.
+- Playwright in Edge verified search, the archive view, status filtering, and the sample test details. The assignment path still required acknowledgement, kept the draft on simulated failure, and showed one new row after retry. The row showed zero completions.
+- Browser checks covered newly assigned and sample progress, before/after evidence, reopening the saved sample follow-up draft during the visit, and the 390 px layout. The existing local Curriculum plan path completed separately and its result left the previous Assigned tests row available. No uncaught page errors were reported.
+
 ## Recommendation detail
 
 - `corepack pnpm test` passed all three domain tests. `corepack pnpm build` passed.

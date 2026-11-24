@@ -3,6 +3,7 @@ import {createRoot} from 'react-dom/client';
 import {materials,students,duration,validSchedule,canSubmit,initialDraft} from './domain.mjs';
 import {RecommendedReview, ReviewGlyph, groups} from './RecommendedReview';
 import {RecommendationDetail} from './RecommendationDetail';
+import {AssignedTests} from './AssignedTests';
 import './style.css';
 
 type Draft=typeof initialDraft;
@@ -13,6 +14,7 @@ function Button({children,onClick,primary=false,disabled=false}:{children:React.
 function App(){
  const [page,setPage]=useState('overview');const [step,setStep]=useState(0);const [draft,setDraft]=useState<Draft>(()=>{try{const d=JSON.parse(localStorage.getItem('info5900-draft-v1')||'null');return d?{...initialDraft,...d,reviewed:false}:initialDraft;}catch{return initialDraft;}});
  const [query,setQuery]=useState('');const [type,setType]=useState('All types');const [groupIndex,setGroupIndex]=useState(0);const [flag,setFlag]=useState(false);const [dialog,setDialog]=useState<string|null>(null);const [notice,setNotice]=useState('');const [zoom,setZoom]=useState(100);const [failure,setFailure]=useState(false);const [submitted,setSubmitted]=useState(false);const [receipt,setReceipt]=useState<Draft|null>(null);
+ const [assignedSnapshots,setAssignedSnapshots]=useState<Draft[]>([]);
  const [recipientOptions,setRecipientOptions]=useState(()=>[...new Set([...students,...draft.recipients])]);
  const update=(p:Partial<Draft>)=>{setDraft(d=>({...d,...p,reviewed:false}));setFailure(false);};
  const go=(p:string,s=0)=>{setPage(p);setStep(s);setNotice('');window.scrollTo(0,0);};
@@ -136,7 +138,7 @@ function App(){
  {failure&&<div role="alert" className="error callout">Submission failed in test mode. Your draft is retained. Turn off simulated failure and retry.</div>}<details className="testing"><summary>Prototype test controls</summary><label className="checkline"><input type="checkbox" onChange={e=>setFailure(e.target.checked)} checked={failure}/>Simulate submission failure</label></details></>}
  <footer className="flow-footer">
  {step===5?<label className="checkline"><input type="checkbox" checked={draft.reviewed} onChange={event=>setDraft(current=>({...current,reviewed:event.target.checked}))}/>I have reviewed the students, evidence, materials, and schedule.</label>:step>0&&<Button onClick={()=>setStep(step-1)}>Back</Button>}
- <div className="actions"><Button onClick={save}>Save draft</Button>{step<5?<Button primary disabled={count===0||(step===4&&(!validSchedule(draft.start,draft.due)||!draft.recipients.length))} onClick={next}>{step===4?(draft.action==='plan'?'Review schedule':'Review assignment'):'Continue'}</Button>:<Button primary disabled={!canSubmit(draft)} onClick={()=>{if(failure){setNotice('Submission failed. Draft preserved; retry with test failure turned off.');return;}setReceipt(structuredClone(draft));setSubmitted(true);go('success');}}>{draft.action==='assignment'?'Confirm and assign':'Confirm and add to plan'}</Button>}</div></footer></section>}
+ <div className="actions"><Button onClick={save}>Save draft</Button>{step<5?<Button primary disabled={count===0||(step===4&&(!validSchedule(draft.start,draft.due)||!draft.recipients.length))} onClick={next}>{step===4?(draft.action==='plan'?'Review schedule':'Review assignment'):'Continue'}</Button>:<Button primary disabled={!canSubmit(draft)} onClick={()=>{if(failure){setNotice('Submission failed. Draft preserved; retry with test failure turned off.');return;}const snapshot=structuredClone(draft);setReceipt(snapshot);if(snapshot.action==='assignment')setAssignedSnapshots(previous=>[...previous,snapshot]);setSubmitted(true);go('success');}}>{draft.action==='assignment'?'Confirm and assign':'Confirm and add to plan'}</Button>}</div></footer></section>}
  {page==='success'&&receipt&&<section className="flow-screen">
  <article className="flow-panel">
    <h1>{receipt.action==='assignment'?'Assigned test created':'Added to Curriculum plan'}</h1>
@@ -151,13 +153,14 @@ function App(){
  </article>
  <footer className="flow-footer"><div className="actions"><Button onClick={()=>go('overview')}>Back to group</Button><Button primary onClick={()=>go(receipt.action==='assignment'?'assignments':'plan')}>Open in {receipt.action==='assignment'?'Assigned tests':'Curriculum plan'}</Button></div></footer>
  </section>}
- {(page==='assignments'||page==='plan')&&<section className="flow-screen">
- <h1>{page==='plan'?'Curriculum plan':'Assigned tests'}</h1>
- <p className="subtitle">{page==='plan'?'Local plan entries':'Local assigned tests'}</p>
- {submitted&&receipt&&((page==='plan')===(receipt.action==='plan'))?<div className="review-table destination-table"><table><thead><tr><th scope="col">Name</th><th scope="col">Class</th><th scope="col">Status</th><th scope="col">Completion deadline</th></tr></thead><tbody><tr>
+ {page==='assignments'&&<AssignedTests snapshots={assignedSnapshots} onBack={()=>go('overview')}/>}
+ {page==='plan'&&<section className="flow-screen">
+ <h1>Curriculum plan</h1>
+ <p className="subtitle">Local plan entries</p>
+ {submitted&&receipt&&receipt.action==='plan'?<div className="review-table destination-table"><table><thead><tr><th scope="col">Name</th><th scope="col">Class</th><th scope="col">Status</th><th scope="col">Completion deadline</th></tr></thead><tbody><tr>
  <th scope="row">Equivalent fractions review<small>{receipt.recipients.join(', ')}</small><small>Starts {receipt.start}</small></th>
  <td><span className="evidence-pill">6A</span></td><td><span className="evidence-pill">Not started</span></td><td>{receipt.due}</td>
- </tr></tbody></table></div>:<article className="flow-panel"><h2>No review {page==='plan'?'planned':'assigned'} yet</h2><p>Complete the review workflow to create a local result.</p></article>}
+ </tr></tbody></table></div>:<article className="flow-panel"><h2>No review planned yet</h2><p>Complete the review workflow to create a local result.</p></article>}
  <footer className="flow-footer"><Button onClick={()=>go('overview')}>Back to group</Button></footer>
  </section>}
  </div></div></main>{dialog&&<div className="overlay" onClick={()=>setDialog(null)}><section role="dialog" aria-modal="true" aria-label="Prototype information" className="dialog" onClick={e=>e.stopPropagation()} onKeyDown={e=>{if(e.key==='Escape')setDialog(null);}}><h2>Teacher preview</h2><p>{dialog}</p><Button primary onClick={()=>setDialog(null)}>Close</Button></section></div>}</div>;

@@ -213,6 +213,17 @@ header > button:last-child { justify-self: end; min-height: 40px; }
 .student-picker::backdrop { background: #201f1d66; }
 .student-options { margin: 12px 0; max-height: 42dvh; overflow: auto; }
 .student-options .evidence-pill { margin-left: auto; }
+.assigned-views { align-self: flex-start; }
+.assigned-toolbar { margin: 6px 0 12px; }
+.assigned-toolbar .actions { flex-wrap: wrap; }
+.assigned-toolbar .actions > * { width: auto; max-width: 100%; }
+.assigned-toolbar .actions input[type=search] { width: 160px; }
+.assigned-tests .review-table table { min-width: 610px; }
+.test-progress { display: block; margin-top: 4px; width: 74px; height: 8px; accent-color: var(--primary); }
+.test-evidence-dialog { width: min(620px, calc(100% - 32px)); border: 1px solid var(--border); color: var(--text); }
+.test-evidence-dialog::backdrop { background: #201f1d66; }
+.test-evidence-dialog footer { justify-content: flex-end; }
+.test-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 @media (max-width: 760px) {
   .flow-split { grid-template-columns: 1fr; gap: 0; }
   .progress-steps { flex-wrap: wrap; }
