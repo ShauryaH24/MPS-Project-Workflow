@@ -1,5 +1,12 @@
 # Verification · 22 Oct 2026
 
+## Recommended review update · 24 Nov 2026
+
+- `corepack pnpm test` passed all 3 domain tests. `corepack pnpm build` passed TypeScript and Vite.
+- Playwright with Microsoft Edge at 1280 × 800 displayed three suggested groups. A browser capture was visually compared against the supplied PNG. Each evidence disclosure opened and closed with its expected aggregate count. The six-row Class knowledge gaps list opened and returning to Suggested groups preserved the expanded row.
+- Filtering to Insufficient evidence displayed only Percentages. Clearing that filter restored all three groups. The fractions row opened the detailed evidence and preparation journey. The confirmation action was disabled until teacher acknowledgement. Submission created a local result with lifecycle status Not started, and returning from Assigned tests preserved the expanded group.
+- At 390 × 844 the review page fit the viewport with the wide table contained in its own scroll region. No uncaught browser errors were reported during the run.
+
 ## Completed checks
 
 - `pnpm install` completed with esbuild explicitly allowed.
